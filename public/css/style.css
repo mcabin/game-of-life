@@ -1,0 +1,19 @@
+body{
+    margin-left: 0%;
+    margin-bottom: 0%;
+    margin-top: 0%;
+    height: 100%; 
+    overflow: hidden;
+
+}
+#header{
+    height: 10vh;
+    width:100vw;
+    background-color: gainsboro;
+}
+#canvasBoard{
+    height:90vh;
+    width:100vw;
+    border:1px solid #000000;
+    background-color: rgb(55, 62, 82);
+}
