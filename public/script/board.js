@@ -21,8 +21,9 @@ var sizeTabY=canvasHeight/sizeCellY;
 var pause=false;
 var maxCell=3;
 var minCell=2;
-var BirthCell=3
-
+var BirthCell=3;
+var directionX;
+var directionY;
 var table=[];
 initialiseTable()
 var oldTable=[].concat(table);
@@ -44,21 +45,17 @@ function drawBoard(w,h,x,y){
     ctx.beginPath();
     var change=false;
     ctx.fillStyle='rgb(206, 91, 15 )';
-
     for(i=cellX;i<canvasWidth;i+=w){
-        
+      change=!change;
         for(j=cellY;j<canvasHeight;j+=h){
-            change=!change;
-            if(change){
+            coor=translateCoordinate(i+x,j+y);
+            if(coor.y%2==change){
               ctx.rect(i,j,w,h);
             }
-            coor=translateCoordinate(i+x,j+y);
-            tmp=CellLive(coor.x,coor.y);
-            if(tmp){
+            if(CellLive(coor.x,coor.y)){
               ctx.fillRect(i,j,w,h);
             }
         }
-        change=!change;
 
     }
     ctx.stroke();
@@ -67,39 +64,17 @@ function drawBoard(w,h,x,y){
 function handleMouseDown(e){
     startDownX=parseInt(e.clientX-offsetX);
     startDownY=parseInt(e.clientY-offsetY);
-
     // set the drag flag
     isDragging=true;
-   
+    directionX=0;
+    directionY=0;
   }
 
   function handleMouseUp(e){
-    canMouseX=parseInt(e.clientX-offsetX);
-    canMouseY=parseInt(e.clientY-offsetY);
-    // clear the drag flag
-    // startX=(startX-Math.floor((canMouseX-startDownX)/2));
-    // startY=(startY-Math.floor((canMouseY-startDownY)/2));
-    // endY=canvasHeight*zoom-canvasHeight;
-    // endX=canvasWidth*zoom-canvasWidth;
-    // if(startX>endX){
-    //   startX=endX;
-    // }
-    // if(startY>endY){
-    //   startY=endY;
-    // }
-    // if(startY<0){
-    //   startY=0;
-    // }
-    // if(startX<0){
-    //   startX=0;
-    // }
     isDragging=false;
   }
 
   function handleMouseOut(e){
-    // canMouseX=parseInt(e.clientX-offsetX);
-    // canMouseY=parseInt(e.clientY-offsetY);
-    // // user has left the canvas, so clear the drag flag
     isDragging=false;
   }
 
@@ -108,10 +83,19 @@ function handleMouseDown(e){
     canMouseY=parseInt(e.clientY-offsetY);
     // if the drag flag is set, clear the canvas and draw the image
     if(isDragging){
-        // console.log("start")
-        // ctx.clearRect(0,0,canvasWidth,canvasHeight);
-        currPostX=(startX-Math.floor((canMouseX-startDownX)/15));
-        currPostY=(startY-Math.floor((canMouseY-startDownY)/15));
+        currPostX=(startX-Math.floor((canMouseX-startDownX)/10));
+        currPostY=(startY-Math.floor((canMouseY-startDownY)/10));
+        curDirX=Math.floor((canMouseX-startDownX)/10)>=0;
+        curDirY=Math.floor((canMouseY-startDownY)/10)>=0;
+        if(curDirX!=directionX ){
+          console.log("Changement de cote")
+          directionX=curDirX;
+          startDownX=canMouseX;
+        }
+        if( curDirY!=directionY){
+          startDownY=canMouseY;
+          directionY=curDirY;
+        }
         endY=canvasHeight*zoom-canvasHeight;
         endX=canvasWidth*zoom-canvasWidth;
         if(currPostX<0){
