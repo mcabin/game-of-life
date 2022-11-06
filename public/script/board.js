@@ -1,34 +1,34 @@
 
 $(document).ready(function() {
-var c = document.getElementById("canvasBoard");
-var ctx = c.getContext("2d");
-var canvasOffset=$("#canvasBoard").offset();
-var offsetX=canvasOffset.left;
-var offsetY=canvasOffset.top;
-var canvasWidth=c.width;
-var canvasHeight=c.height;
+let c = document.getElementById("canvasBoard");
+let ctx = c.getContext("2d");
+let canvasOffset=$("#canvasBoard").offset();
+let offsetX=canvasOffset.left;
+let offsetY=canvasOffset.top;
+let canvasWidth=c.width;
+let canvasHeight=c.height;
 
-var startX=0;
-var startY=0;
-var sizeCellX=10;
-var sizeCellY=10;
-var startDownX;
-var startDownY;
-var zoom=1;
-var isDragging=false;
-var sizeTabX=canvasWidth/sizeCellX;
-var sizeTabY=canvasHeight/sizeCellY;
-var pause=false;
-var maxCell=3;
-var minCell=2;
-var BirthCell=3;
-var directionX;
-var directionY;
-var table=[];
+let startX=0;
+let startY=0;
+let sizeCellX=10;
+let sizeCellY=10;
+let startDownX;
+let startDownY;
+let zoom=1;
+let isDragging=false;
+let sizeTabX=canvasWidth/sizeCellX;
+let sizeTabY=canvasHeight/sizeCellY;
+let pause=false;
+let maxCell=3;
+let minCell=2;
+let BirthCell=3;
+let directionX;
+let directionY;
+let table=[];
 initialiseTable()
-var oldTable=[].concat(table);
+let oldTable=[].concat(table);
 eventListers();
-var intervalId = window.setInterval(function(){
+let intervalId = window.setInterval(function(){
   ctx.clearRect(0,0,canvasWidth,canvasHeight);
     drawBoard(sizeCellX*zoom,sizeCellY*zoom,startX,startY);
     if(!pause){
@@ -40,10 +40,10 @@ var intervalId = window.setInterval(function(){
 
 function drawBoard(w,h,x,y){
    
-    var cellX=(x-x%w)-x;
-    var cellY=(y-y%h)-y;
+    let cellX=(x-x%w)-x;
+    let cellY=(y-y%h)-y;
     ctx.beginPath();
-    var change=false;
+    let change=false;
     ctx.fillStyle='rgb(206, 91, 15 )';
     for(i=cellX;i<canvasWidth;i+=w){
       change=!change;
@@ -169,11 +169,11 @@ function handleMouseDown(e){
 }
 
 function CellBirth(x,y){
-  var cellCord=x+y*sizeTabX;
-  var xLeft = (x == 0) ? sizeTabX - 1 : -1;
-	var xRight = (x == sizeTabX - 1) ? -(sizeTabX - 1) : +1;
-	var yUp = (y == 0) ? (sizeTabY * sizeTabX) - sizeTabX : -sizeTabX;
-	var yDown = (y == sizeTabY-1) ? -((sizeTabY * sizeTabX) - sizeTabX) : +sizeTabX;
+  let cellCord=x+y*sizeTabX;
+  let xLeft = (x == 0) ? sizeTabX - 1 : -1;
+	let xRight = (x == sizeTabX - 1) ? -(sizeTabX - 1) : +1;
+	let yUp = (y == 0) ? (sizeTabY * sizeTabX) - sizeTabX : -sizeTabX;
+	let yDown = (y == sizeTabY-1) ? -((sizeTabY * sizeTabX) - sizeTabX) : +sizeTabX;
   table[cellCord] |=0x01;
   
   table[cellCord+xLeft]+=0x02;
@@ -187,11 +187,11 @@ function CellBirth(x,y){
   table[cellCord+xRight+yDown]+=0x02;
 }
 function CellDeath(x,y){
-  var cellCord=x+y*sizeTabX;
-  var xLeft = (x == 0) ? sizeTabX - 1 : -1;
-	var xRight = (x == sizeTabX - 1) ? -(sizeTabX - 1) : +1;
-	var yUp = (y == 0) ? (sizeTabY * sizeTabX) - sizeTabX : -sizeTabX;
-	var yDown = (y == sizeTabY-1) ? -((sizeTabY * sizeTabX) - sizeTabX) : +sizeTabX;
+  let cellCord=x+y*sizeTabX;
+  let xLeft = (x == 0) ? sizeTabX - 1 : -1;
+	let xRight = (x == sizeTabX - 1) ? -(sizeTabX - 1) : +1;
+	let yUp = (y == 0) ? (sizeTabY * sizeTabX) - sizeTabX : -sizeTabX;
+	let yDown = (y == sizeTabY-1) ? -((sizeTabY * sizeTabX) - sizeTabX) : +sizeTabX;
 
   table[cellCord] &= ~0x01;
   table[cellCord+xLeft]-=0x02;
@@ -211,10 +211,10 @@ function CellNeighbors(x,y){
 }
 
 function NextTurn(){
-  var x, y, count;
+  let x, y, count;
   for (y = 0; y < sizeTabY; y++) {
 		for (x = 0; x < sizeTabX; x++) {
-			var tmp= oldTable[x+y*sizeTabX];
+			let tmp= oldTable[x+y*sizeTabX];
 			if (tmp!= 0) {
 				count = CellNeighbors(x, y);
 				if (CellLive( x,  y)) {
